@@ -1,6 +1,7 @@
 module BinaryHypervectors
 
 import Base.bind
+import Base.+
 
 # Chunk manipulation take from/inspired by:
 # https://discourse.julialang.org/t/optimization-how-to-make-sure-xor-is-performed-in-chunks/33947/33):
@@ -20,6 +21,7 @@ function Base.bind(x::BitVector, y::BitVector)
 	return res
 end
 
+Base.:*(x::BitVector, y::BitVector) = bind(x, y)
 
 """
     bundle(vecs...)
@@ -31,6 +33,7 @@ function bundle(vecs...)
 	return round.(Bool, cts ./ size(vecs, 1))
 end
 
+Base.:+(x::BitVector, y::BitVector) = bundle(x, y)
 
 """
     hammingsimilarity(x, y)
