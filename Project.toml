@@ -1,0 +1,13 @@
+name = "BinaryHypervectors"
+uuid = "26f24e0d-335a-4f16-b355-0381354a1c80"
+authors = ["Garrett Smith <gasmith@uni-potsdam.de> and contributors"]
+version = "2023.0.0-07-25"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
