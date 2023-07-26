@@ -9,4 +9,4 @@ This is a small Julia package for working with binary hypervectors in the contex
 
 `BinaryHypervectors` is specialized for hyperdimensional computing with binary vectors. Binding (associating) vectors is done using bitwise XOR, bundling (combining) vectors is done using majority rule, and permuting is done using `circshift`.
 
-Note that the Base functions `*` and `+` have been remapped to compute the binding and bundling functions when applied to `BitVectors`! This could lead to issues down the road, and it might be type piracy...
+Introduces a simple type `BinaryHypervector` and the associated algebra: `*` or `bind()` for binding, `+` or `bundle()` for bundling, and `circshift()` for simple permutations.

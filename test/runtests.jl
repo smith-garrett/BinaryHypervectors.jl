@@ -1,9 +1,9 @@
 using BinaryHypervectors
 using Test
 
-x = BitVector([1, 0, 0, 1])
-y = BitVector([1, 1, 1, 0])
-z = BitVector([0, 0, 1, 1])
+x = BinaryHypervector([1, 0, 0, 1])
+y = BinaryHypervector([1, 1, 1, 0])
+z = BinaryHypervector([0, 0, 1, 1])
 
 @testset "Binding tests" begin
     @test all(bind(x, y) .== [0, 1, 1, 1])
@@ -27,6 +27,7 @@ end
 end
 
 @testset "Basic operations" begin
+    @test all(x * x .== zeros(size(x)))
     @test hammingsimilarity(x, y) < hammingsimilarity(x, x)
     @test hammingsimilarity(x, x * y) < hammingsimilarity(x, x + y)
 end

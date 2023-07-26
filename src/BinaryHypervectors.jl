@@ -1,69 +1,38 @@
 module BinaryHypervectors
 
-import Base.bind
+using Random
 
-# Chunk manipulation take from/inspired by:
-# https://discourse.julialang.org/t/optimization-how-to-make-sure-xor-is-performed-in-chunks/33947/33):
-
-
-"""
-    bind(x, y)
-
-Bind two vectors using XOR. Applied efficiently by exploiting the chunk structure of BitVectors.
-"""
-function Base.bind(x::BitVector, y::BitVector)
-    cx, cy = x.chunks, y.chunks
-    res = BitVector(undef, length(x))
-	for i in eachindex(cx, cy)
-		res.chunks[i] = xor(cx[i], cy[i])
-	end
-	return res
-end
+include("operations.jl")
 
 
-"""
-	Base.:*(x::BitVector, y::BitVector)	
-
-Binds two bit vectors. Equivalent to `bind(x, y)`.
-"""
-Base.:*(x::BitVector, y::BitVector) = bind(x, y)
-
-
-"""
-    bundle(vecs...)
-
-Bundle  vectors using majority rule.
-"""
-function bundle(vecs...) 
-	cts = map(count, eachrow(cat(vecs...; dims=2)))
-	return round.(Bool, cts ./ size(vecs, 1))
-end
-
-
-"""
-	Base.:+(x::BitVector, y::BitVector)	
-
-Bundle two bit vectors. Equivalent to `bundle(x, y)`.
-"""
-Base.:+(x::BitVector, y::BitVector) = bundle(x, y)
-
-
-"""
-    hammingsimilarity(x, y)
-
-Compute 1 minus the normalized Hamming distance between the vectors x and y. Uses chunk structure of BitVectors for speed.
-"""
-function hammingsimilarity(x, y)
-    cx, cy = x.chunks, y.chunks
-	s = 0
-	for i in eachindex(cx, cy)
-		s += count_ones(xor(cx[i], cy[i]))
-	end
-	return 1 - length(x)^-1 * s
-end
-
+export BinaryHypervector
 export bind
 export bundle
 export hammingsimilarity
+
+
+struct BinaryHypervector <: AbstractVector{Bool}
+	vec::BitVector
+	dim::Int
+	BinaryHypervector(v=bitrand(2^13), d=2^13) = new(v, d)
+end
+
+
+"""
+	BinaryHypervector(x::BitVector)
+
+Create a BinaryHypervector by rounding an AbstractVector elementwise to 0 or >= 0.5.
+"""
+function BinaryHypervector(x::T) where T <: AbstractVector
+	BinaryHypervector(x .>= 0.5, length(x))
+end
+
+
+# Required/useful methods for subtypes of AbstractArray
+Base.length(x::BinaryHypervector) = x.dim
+Base.size(x::BinaryHypervector) = (x.dim,)
+Base.getindex(x::BinaryHypervector, i::Int) = 1 <= i <= x.dim ? x.vec[i] : throw(BoundsError(x, i))
+Base.getindex(x::BinaryHypervector, I) = BinaryHypervector([x.vec[i] for i in I])
+Base.show(io::IO, ::MIME"text/plain", x::BinaryHypervector) = print(io, "$(x.dim)-dimensional BinaryHypervector:\n   ", x.vec)
 
 end
