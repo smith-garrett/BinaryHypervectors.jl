@@ -48,7 +48,7 @@ Base.:+(x::BinaryHypervector, y::BinaryHypervector) = bundle(x, y)
 
 Permute the BinaryHypervector by performing the circular shift n bits to the right.
 """
-function Base.circshift(x::BinaryHypervector, n) = BinaryHypervector(circshift(x.vec, n))
+Base.circshift(x::BinaryHypervector, n) = BinaryHypervector(circshift(x.vec, n))
 
 """
     hammingsimilarity(x, y)
