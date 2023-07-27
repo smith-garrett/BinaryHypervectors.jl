@@ -7,6 +7,6 @@
 
 This is a small Julia package for working with binary hypervectors in the context of hyperdimensional computing. Hyperdimensional computing is an approach to cognitive (neuro-) science and machine learning that uses very large vectors of random numbers to encode and retrieve information.
 
-`BinaryHypervectors` is specialized for hyperdimensional computing with binary vectors. Binding (associating) vectors is done using bitwise XOR, bundling (combining) vectors is done using majority rule, and permuting is done using `circshift`.
+`BinaryHypervectors` is specialized for hyperdimensional computing with binary vectors. Binding (associating) vectors is done using bitwise XOR, bundling (combining) vectors is done using majority rule, and permuting is done using `circshift`. The implementation strives for efficiency and ease of use.
 
-Introduces a simple type `BinaryHypervector` and the associated algebra: `*` or `bind()` for binding, `+` or `bundle()` for bundling, and `circshift()` for simple permutations.
+The package defines a simple type `BinaryHypervector` and the associated algebra: `*` or `bind()` for binding, `+` or `bundle()` for bundling, and `circshift()` for simple permutations. There is also a `sequence_encoding` function for creating correlated hypervectors.
