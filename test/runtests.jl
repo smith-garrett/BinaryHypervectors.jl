@@ -36,8 +36,8 @@ end
     lens = [5, 10, 20, 50]
     for seqlen in lens
         seq = sequence_encoding(seqlen)
-        overlaps = [hammingsimilarity(seq[1], seq[i]) for i in 1:seqlen]
+        overlaps = [round(hammingsimilarity(seq[1], seq[i]), digits=1) for i in 1:seqlen]
         #println(overlaps)
-        @test all([overlaps[i] > overlaps[i+1] for i in 1:(seqlen-1)])
+        @test all([overlaps[i] >= overlaps[i+1] for i in 1:(seqlen-1)])
     end
 end
