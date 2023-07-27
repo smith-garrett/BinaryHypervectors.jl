@@ -13,6 +13,7 @@ function hammingsimilarity(x, y)
 end
 
 
+# Implementation inspired by https://michielstock.github.io/posts/2022/2022-10-04-HDVtutorial/
 """
     sequence_encoding(seqlen, ndim=2^13)
 
