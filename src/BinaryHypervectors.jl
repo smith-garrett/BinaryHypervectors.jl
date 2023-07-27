@@ -26,6 +26,14 @@ function BinaryHypervector(x::T) where T <: AbstractVector
 end
 
 
+"""
+	BinaryHypervector(n::Int)
+
+Create a random binary hypervector with n dimensions.
+"""
+BinaryHypervector(n::Int) = BinaryHypervector(bitrand(n), n)
+
+
 # Required/useful methods for subtypes of AbstractArray
 Base.length(x::BinaryHypervector) = x.dim
 Base.size(x::BinaryHypervector) = (x.dim,)
