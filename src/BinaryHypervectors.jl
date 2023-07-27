@@ -1,12 +1,14 @@
 module BinaryHypervectors
 
 using Random
+using StatsBase: sample
 
 
 export BinaryHypervector
 export bind
 export bundle
 export hammingsimilarity
+export sequence_encoding
 
 
 struct BinaryHypervector <: AbstractVector{Bool}
@@ -27,11 +29,11 @@ end
 
 
 """
-	BinaryHypervector(n::Int)
+	BinaryHypervector(ndim::Int)
 
-Create a random binary hypervector with n dimensions.
+Create a random binary hypervector with ndim dimensions.
 """
-BinaryHypervector(n::Int) = BinaryHypervector(bitrand(n), n)
+BinaryHypervector(ndim::Int) = BinaryHypervector(bitrand(ndim), ndim)
 
 
 # Required/useful methods for subtypes of AbstractArray
@@ -43,5 +45,6 @@ Base.show(io::IO, ::MIME"text/plain", x::BinaryHypervector) = print(io, "$(x.dim
 
 
 include("operations.jl")
+include("utils.jl")
 
 end

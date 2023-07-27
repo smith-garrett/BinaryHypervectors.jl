@@ -31,3 +31,13 @@ end
     @test hammingsimilarity(x, y) < hammingsimilarity(x, x)
     @test hammingsimilarity(x, x * y) < hammingsimilarity(x, x + y)
 end
+
+@testset "Sequence encodings" begin
+    lens = [5, 10, 20, 50]
+    for seqlen in lens
+        seq = sequence_encoding(seqlen)
+        overlaps = [hammingsimilarity(seq[1], seq[i]) for i in 1:seqlen]
+        #println(overlaps)
+        @test all([overlaps[i] > overlaps[i+1] for i in 1:(seqlen-1)])
+    end
+end
