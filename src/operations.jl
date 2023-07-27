@@ -27,11 +27,20 @@ Base.:*(x::BinaryHypervector, y::BinaryHypervector) = bind(x, y)
 """
     bundle(vecs...)
 
-Bundle vectors using majority rule.
+Bundle vectors using majority rule. Ties broken deterministically using the rule from Hannagan et al. (2011, CogSci).
 """
-function bundle(vecs...) 
+function bundle(vecs...)
+	nvecs = size(vecs, 1)
+	ndim = length(vecs[1])
 	cts = map(count, eachrow(cat(getfield.(vecs, :vec)...; dims=2)))
-	return BinaryHypervector(round.(Bool, cts ./ size(vecs, 1)))
+	avgs = cts ./ nvecs
+	ties = findall(avgs .== 0.5)
+	tiesp1modn = mod.(ties .+ 1, ndim)
+	tiesp1modn[tiesp1modn .== 0] .= ndim
+	avgs[ties] = xor.(vecs[1].vec[tiesp1modn], vecs[end].vec[tiesp1modn])# ./ size(vecs, 1)
+	#avgs[ties] .= rand(length(ties))  # random tie breaking
+	#return BinaryHypervector(round.(Bool, cts ./ size(vecs, 1)))  # no tie breaking
+	return BinaryHypervector(round.(Bool, avgs))
 end
 
 

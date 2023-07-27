@@ -13,10 +13,10 @@ z = BinaryHypervector([0, 0, 1, 1])
 end
 
 @testset "Bundling tests" begin
-    @test all(bundle(x, y) .== [1, 0, 0, 0])
-    @test all(x + y .== [1, 0, 0, 0])
-    @test all(bundle(y, x) .== [1, 0, 0, 0])
-    @test all(y + x .== [1, 0, 0, 0])
+    @test all(bundle(x, y) .== [1, 1, 1, 0])
+    @test all(x + y .== [1, 1, 1, 0])
+    @test all(bundle(y, x) .== [1, 1, 1, 0])
+    @test all(y + x .== [1, 1, 1, 0])
     @test all(bundle(x, y, z) .== [1, 0, 1, 1])
 end
 
@@ -29,7 +29,7 @@ end
 @testset "Basic operations" begin
     @test all(x * x .== zeros(size(x)))
     @test hammingsimilarity(x, y) < hammingsimilarity(x, x)
-    @test hammingsimilarity(x, x * y) < hammingsimilarity(x, x + y)
+    @test hammingsimilarity(x, x * z) < hammingsimilarity(x, x + z)
 end
 
 @testset "Sequence encodings" begin
@@ -40,4 +40,16 @@ end
         #println(overlaps)
         @test all([overlaps[i] >= overlaps[i+1] for i in 1:(seqlen-1)])
     end
+end
+
+@testset "Regression tests" begin
+    ndim = 1000
+    nrep = 100
+    res = zeros(nrep)
+    for i in 1:nrep
+        a, b = BinaryHypervector(ndim), BinaryHypervector(ndim)
+        res[i] = sum(a + b)
+    end
+    # Test to within 5% error
+    @test isapprox(sum(res) / nrep, ndim / 2, rtol=0.05)
 end
