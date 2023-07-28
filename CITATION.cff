@@ -1,9 +1,11 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-  - family-names: Smith
-    given-names: Garrett
-    orcid: https://orcid.org/0000-0001-7238-3942
-    title: "BinaryHypervectors.jl"
+- family-names: "Smith"
+  given-names: "Garrett"
+  orcid: "https://orcid.org/0000-0001-7238-3942"
+title: "BinaryHypervectors.jl"
 version: 0.1.1
+doi: NA
 date-released: 2023-07-28
+url: "https://github.com/smith-garrett/BinaryHypervectors.jl"
