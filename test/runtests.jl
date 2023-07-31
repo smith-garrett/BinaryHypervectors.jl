@@ -30,6 +30,7 @@ end
     @test all(x * x .== zeros(size(x)))
     @test hammingsimilarity(x, y) < hammingsimilarity(x, x)
     @test hammingsimilarity(x, x * z) < hammingsimilarity(x, x + z)
+    @test hammingsimilarity(x, circshift(x)) < hammingsimilarity(x, x)
 end
 
 @testset "Sequence encodings" begin
