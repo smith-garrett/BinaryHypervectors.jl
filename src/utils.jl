@@ -5,11 +5,11 @@ Compute 1 minus the normalized Hamming distance between the vectors x and y. Use
 """
 function hammingsimilarity(x, y)
     cx, cy = x.vec.chunks, y.vec.chunks
-	s = 0
-	for i in eachindex(cx, cy)
-		s += count_ones(xor(cx[i], cy[i]))
-	end
-	return 1 - length(x)^-1 * s
+    s = 0
+    for i in eachindex(cx, cy)
+        s += count_ones(xor(cx[i], cy[i]))
+    end
+    return 1 - length(x)^-1 * s
 end
 
 
@@ -22,7 +22,6 @@ Create correlated sequence encodings with seqlen elements. Each BinaryHypervecto
 function sequence_encoding(seqlen, ndim=2^13)
     vecs = [BinaryHypervector(ndim) for _ in 1:seqlen]
     for i in 2:seqlen
-        #idx = sample(1:ndim, ndim ÷ seqlen; replace=false)
         for j in 1:ndim
             vecs[i].vec[j] = rand() < 1 / seqlen ? ~vecs[i-1].vec[j] : vecs[i-1].vec[j]
         end

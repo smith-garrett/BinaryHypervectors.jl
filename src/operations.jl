@@ -1,4 +1,4 @@
-# Chunk manipulation take from/inspired by:
+# Chunk manipulation taken from/inspired by:
 # https://discourse.julialang.org/t/optimization-how-to-make-sure-xor-is-performed-in-chunks/33947/33):
 
 """
@@ -9,10 +9,10 @@ Bind two vectors using XOR. Applied efficiently by exploiting the chunk structur
 function Base.bind(x::BinaryHypervector, y::BinaryHypervector)
     cx, cy = x.vec.chunks, y.vec.chunks
     res = BitVector(undef, length(x))
-	for i in eachindex(cx, cy)
-		res.chunks[i] = xor(cx[i], cy[i])
-	end
-	return BinaryHypervector(res)
+    for i in eachindex(cx, cy)
+        res.chunks[i] = xor(cx[i], cy[i])
+    end
+    return BinaryHypervector(res)
 end
 
 
@@ -30,17 +30,15 @@ Base.:*(x::BinaryHypervector, y::BinaryHypervector) = bind(x, y)
 Bundle vectors using majority rule. Ties broken deterministically using the rule from Hannagan et al. (2011, CogSci).
 """
 function bundle(vecs...)
-	nvecs = size(vecs, 1)
-	ndim = length(vecs[1])
-	cts = map(count, eachrow(cat(getfield.(vecs, :vec)...; dims=2)))
-	avgs = cts ./ nvecs
-	ties = findall(avgs .== 0.5)
-	tiesp1modn = mod.(ties .+ 1, ndim)
-	tiesp1modn[tiesp1modn .== 0] .= ndim
-	avgs[ties] = xor.(vecs[1].vec[tiesp1modn], vecs[end].vec[tiesp1modn])# ./ size(vecs, 1)
-	#avgs[ties] .= rand(length(ties))  # random tie breaking
-	#return BinaryHypervector(round.(Bool, cts ./ size(vecs, 1)))  # no tie breaking
-	return BinaryHypervector(round.(Bool, avgs))
+    nvecs = size(vecs, 1)
+    ndim = length(vecs[1])
+    cts = map(count, eachrow(cat(getfield.(vecs, :vec)...; dims=2)))
+    avgs = cts ./ nvecs
+    ties = findall(avgs .== 0.5)
+    tiesp1modn = mod.(ties .+ 1, ndim)
+    tiesp1modn[tiesp1modn.==0] .= ndim
+    avgs[ties] = xor.(vecs[1].vec[tiesp1modn], vecs[end].vec[tiesp1modn])
+    return BinaryHypervector(round.(Bool, avgs))
 end
 
 

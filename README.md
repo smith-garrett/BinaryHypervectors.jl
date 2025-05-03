@@ -50,5 +50,5 @@ julia> extract = A1B2 * seq[2]
 julia> map(x -> hammingsimilarity(extract, x), [A, B])
 ```
 
-See, e.g., Kanerva (2009, *Cognitive Computing*) for more detailed background.
+See, e.g., Kanerva (2009, *Cognitive Computation 1*, pp 139--159) for more detailed background.
 
