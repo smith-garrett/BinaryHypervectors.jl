@@ -12,9 +12,9 @@ export sequence_encoding
 
 
 struct BinaryHypervector <: AbstractVector{Bool}
-	vec::BitVector
-	dim::Int
-	BinaryHypervector(v=bitrand(2^13), d=2^13) = new(v, d)
+    vec::BitVector
+    dim::Int
+    BinaryHypervector(v=bitrand(2^13), d=2^13) = new(v, d)
 end
 
 
@@ -23,8 +23,8 @@ end
 
 Create a BinaryHypervector by rounding an AbstractVector elementwise to 0 or >= 0.5.
 """
-function BinaryHypervector(x::T) where T <: AbstractVector
-	BinaryHypervector(x .>= 0.5, length(x))
+function BinaryHypervector(x::T) where {T<:AbstractVector}
+    BinaryHypervector(x .>= 0.5, length(x))
 end
 
 
